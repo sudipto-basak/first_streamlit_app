@@ -48,7 +48,7 @@ except URLError as e:
 # streamlit.stop()
 
 # data coming from snowflake
-streamlit.header("The fruit load list contains:")
+streamlit.header("View Our Fruit List - Add Your Favorites!")
 
 # snowflake functions
 def get_fruit_load_list():
@@ -65,6 +65,7 @@ def insert_row_snowflake(new_fruit):
 if streamlit.button("Get Fruit Load List"):
   my_cnx = snowflake.connector.connect(**streamlit.secrets["snowflake"])
   my_data_rows = get_fruit_load_list()
+  my_cnx.close()
   streamlit.dataframe(my_data_rows)
 
 # Let's put a pick list here so they can pick the fruit they want to include 
@@ -72,5 +73,6 @@ add_my_fruit = streamlit.text_input('What fruit would you like to add?','jackfru
 if streamlit.button("Add a Fruit to the List"):
   my_cnx = snowflake.connector.connect(**streamlit.secrets["snowflake"])
   back_from_button = insert_row_snowflake(add_my_fruit)
+  my_cnx.close()
   streamlit.text(back_from_button)
 
